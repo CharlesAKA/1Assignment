@@ -33,7 +33,7 @@ void drawTrendLineGraph(ArrayList<Float> data, String title)
   // Print the text 
    textAlign(CENTER, CENTER);   
    float textY = (border * 0.5f); 
-   text("Yearly Important Descoveries 1860 - 1959", width * 0.5f, textY);
+   text("Yearly Important Descoveries 1860 - 1959 Trend Graph", width * 0.5f, textY);
    
   drawAxis(data, 10, 10, 15, border);   
   float windowRange = (width - (border * 2.0f));
@@ -87,10 +87,61 @@ void drawAxis(ArrayList<Float> data, int horizIntervals, int verticalIntervals, 
   }    
 }
 
+int[] angles = {35, 60, 54, 36, 28, 8, 12, 10, 9, 14, 46};
 
+void drawPiechart(float diameter, int[] data) 
+{
+  background(0);
+  float border = width * 0.1f;
+  textAlign(CENTER, CENTER);   
+  float textY = (border * 0.5f); 
+  text("Yearly Important Descoveries 1860 - 1959 Bar Chart", width * 0.5f, textY);
+  
+  float lastAngle = 0;
+  for (int i = 0; i < data.length; i++) 
+  {
+    float gray = map(i, 0, data.length, 255, 0);
+    fill(gray);
+    arc(width/2, height/2, diameter, diameter, lastAngle, lastAngle+radians(angles[i]));
+    lastAngle += radians(angles[i]);
+  }
+}
+
+
+float range = 800.0f;
+float theta = 0;
+float thetaInc;
+float speed = 200.0f;
+int which = 0;
 void draw()
 {
-  drawTrendLineGraph(sums, "1980");
+  background(0);
+  textAlign(CENTER, CENTER);   
+  text("To view recorded data about the amount of important discoveries made per year,\n please click one for the line graph data or two for the pie hcart data.", width/2 , height / 2);
+    if(keyPressed)
+  {
+    if (key == '1')
+    {
+      which = 1;
+    }
+    if (key == '2')
+    {
+      which = 2;
+    }
+  }
+   if (which == 1)
+  {
+   drawTrendLineGraph(sums, "1980");
+  }
+  else if(which == 2)
+  {
+    drawPiechart(300, angles);
+  }
+    fill(255, 0, 0);
+    translate(450,30);
+    rotate(sin(theta) * radians(range));
+    ellipse(10, 10, 10, 10);    
+    theta += (PI / speed);
   
 }
 
